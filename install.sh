@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir="/opt/
+dir="/opt/"
 
 echo "Enter mongodb address (127.0.0.1:27017): "
 read mongodb
