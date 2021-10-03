@@ -1,15 +1,29 @@
 #!/bin/bash
 
-echo "Enter insall path (/opt/): "
+echo "Enterinsall path (/opt/): "
 read dir
-
 if [ "$dir" == "" ]; then
   dir = "/opt/"
 fi
+
+echo "Enter mongodb address (127.0.0.1:27017): "
+read mongodb
+
+echo "Enter mongodb username (none): "
+read mongodbUser
+if [ "$mongodbUser" != "" ]; then
+  echo "Enter mongodb password (none): "
+  read mongodbPAss
+fi
+
 cd $dir
 
-mkdir jimi
+wget https://github.com/z1pti3/jimi/archive/refs/tags/v3.04.zip
+unzip v3.04.zip
+mv v3.04 jimi
 cd jimi
+
+pip3 install -r requirements.txt
 
 mkdir plugins
 
@@ -18,24 +32,27 @@ cd data
 mkdir temp
 mkdir storage
 mkdir log
-wget https://raw.githubusercontent.com/z1pti3/jimi-docker/master/data/settings.json
-openssl genrsa -out private.pem 2048
-openssl rsa -in private.pem -outform PEM -pubout -out sessionPub.pem 
-openssl rsa -in private.pem -out sessionPriv.pem -outform PEM 
-rm private.pem
+wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/settings.json
+sed 's/"hosts" : ["127.0.0.1:27017"],/"hosts" : ["$mongodb"],' settings.json
+if [ "$mongodbUser" != "" ]; then
+  sed 's/"username" : null,/"username" : "$mongodbUser",' settings.json
+  sed 's/"password" : null,/"password" : "$mongodbUser",' settings.json
+fi
 
+openssl req -newkey rsa:2048 -nodes -keyout sessionPriv.pem -x509 -days 365 -out sessionPub.pem -subj "/C=GB/ST=London/L=London/O=jimi/OU=jimi/CN=jimiproject"
 openssl req -newkey rsa:2048 -nodes -keyout web.key -x509 -days 365 -out web.cert -subj "/C=GB/ST=London/L=London/O=jimi/OU=jimi/CN=jimiproject"
 
-cd ..
-adduser --no-create-home --disabled-password --gecos "" jimi
-chown jimi:jimi -R data/
-chown jimi:jimi -R plugins/
-
-cd $dir
-
-docker network create jimi_network
-docker run -d -v $dir/jimi/db:/data/db --net jimi_network --name jimi_db mongo:latest
-docker run -it -u `id -u jimi`:`id -g jimi` -d -v $dir/jimi/data:/home/jimi/jimi/data -v $dir/jimi/plugins:/home/jimi/jimi/plugins --net jimi_network --name jimi_core z1pti3/jimi_core:amd64
-docker run -it -u `id -u jimi`:`id -g jimi` -d -p 4443:4443 -v $dir/jimi/data:/home/jimi/jimi/data -v $dir/jimi/plugins:/home/jimi/jimi/plugins --net jimi_network --name jimi_web z1pti3/jimi_web:amd64
-
-docker logs jimi_core
+wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/jimi_core.service
+sed 's/opt/$dir' jimi_core.service
+wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/jimi_web.service
+sed 's/opt/$dir' jimi_web.service
+mv jimi_core.service /etc/systemd/system/jimi_core.service
+mv jimi_web.service /etc/systemd/system/jimi_web.service
+systemctl daemon-reload
+systemctl enable jimi_core.service
+systemctl enable jimi_web.service
+systemctl start jimi_core.service
+sleep 5
+journalctl -u jimi_core
+systemctl start jimi_web.service
+echo "Install complete"
