@@ -43,13 +43,14 @@ openssl req -newkey rsa:2048 -nodes -keyout web.key -x509 -days 365 -out web.cer
 wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/jimi_core.service
 wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/jimi_web.service
 
+mv jimi_core.service /etc/systemd/system/jimi_core.service
+mv jimi_web.service /etc/systemd/system/jimi_web.service
+
 useradd jimi -M
 cd ..
 cd ..
 chown -R jimi:jimi jimi/
 
-mv jimi_core.service /etc/systemd/system/jimi_core.service
-mv jimi_web.service /etc/systemd/system/jimi_web.service
 systemctl daemon-reload
 systemctl enable jimi_core.service
 systemctl enable jimi_web.service
