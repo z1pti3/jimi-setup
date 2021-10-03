@@ -1,6 +1,7 @@
 #!/bin/bash
 
 dir="/opt/"
+ver="3.04"
 
 echo "Enter mongodb address (127.0.0.1:27017): "
 read mongodb
@@ -14,9 +15,10 @@ fi
 
 cd $dir
 
-wget https://github.com/z1pti3/jimi/archive/refs/tags/v3.04.zip
-unzip v3.04.zip
-mv jimi-3.04 jimi
+wget https://github.com/z1pti3/jimi/archive/refs/tags/v$ver.zip
+unzip v$ver.zip
+rm v$ver.zip
+mv jimi-$ver jimi
 cd jimi
 
 pip3 install -r requirements.txt
