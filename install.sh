@@ -1,23 +1,19 @@
 #!/bin/bash
 
-dir=$(pwd)
+echo "Enter insall path (/opt/): "
+read dir
+
+if [ "$dir" == "" ]; then
+  dir = "/opt/"
+fi
+cd $dir
 
 mkdir jimi
 cd jimi
 
-mkdir data
 mkdir plugins
-mkdir db
 
-git clone https://github.com/z1pti3/jimiPlugin-humio.git plugins/humio
-git clone https://github.com/z1pti3/jimiPlugin-script.git plugins/script
-git clone https://github.com/z1pti3/jimiPlugin-event.git plugins/event
-git clone https://github.com/z1pti3/jimiPlugin-occurrence.git plugins/occurrence
-git clone https://github.com/z1pti3/jimiPlugin-testFire.git plugins/testFire
-git clone https://github.com/z1pti3/jimiPlugin-email.git plugins/email
-git clone https://github.com/z1pti3/jimiPlugin-remote.git plugins/remote
-git clone https://github.com/z1pti3/jimiPlugin-api.git plugins/api
-
+mkdir data
 cd data
 mkdir temp
 mkdir storage
