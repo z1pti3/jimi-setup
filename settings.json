@@ -5,13 +5,6 @@
         "accessPort" : 5000,
         "secure" : false
     },
-    "debug" : {
-        "level" : 1,
-        "buffer" : 1000,
-        "enabled" : false
-    },
-    "static" : {
-    },
     "mongodb": {
         "hosts" : ["127.0.0.1:27017"],
         "db" : "jimi",
@@ -20,14 +13,20 @@
     },
     "api": {
         "core" : {
-            "bind" : "127.0.0.1",
+            "bind" : "0.0.0.0",
             "port" : 5000,
             "base" : "api/1.0",
             "apiKey" : null
         },
+        "worker" : {
+            "bind" : "127.0.0.1",
+            "startPort" : 5001,
+            "base" : "api/1.0",
+            "apiKey" : null
+        },
         "web" : {
-            "bind" : "0.0.0.0",
-            "port" : 5002,
+            "bind" : "127.0.0.1",
+            "port" : 5015,
             "base" : "api/1.0",
             "apiKey" : null
         },
@@ -35,34 +34,6 @@
             "http" : null,
             "https" : null
         }
-    },
-    "workers" : { 
-        "concurrent" : 15,
-        "loopT" : 0.01,
-        "loopT1" : 0.25,
-        "loopL" : 200
-    },
-    "cpuSaver" : { 
-        "enabled" : true,
-        "loopT" : 0.01,
-        "loopL" : 100
-    },
-    "scheduler" : {
-        "loopP" : 5
-    },
-    "cluster" : {
-        "loopP" : 10,
-        "recoveryTime" : 60,
-        "deadTimer" : 30
-    },
-    "audit" : {
-    "db" : {
-        "enabled" : true
-    },
-    "file" : {
-        "enabled" : true,
-        "logdir" : "log"
-    }
     },
     "auth" : {
         "enabled" : true,
