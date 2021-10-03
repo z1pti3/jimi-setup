@@ -1,10 +1,6 @@
 #!/bin/bash
 
-echo "Enterinsall path (/opt/): "
-read dir
-if [ "$dir" == "" ]; then
-  dir = "/opt/"
-fi
+dir="/opt/
 
 echo "Enter mongodb address (127.0.0.1:27017): "
 read mongodb
@@ -20,7 +16,7 @@ cd $dir
 
 wget https://github.com/z1pti3/jimi/archive/refs/tags/v3.04.zip
 unzip v3.04.zip
-mv v3.04 jimi
+mv jimi-3.04 jimi
 cd jimi
 
 pip3 install -r requirements.txt
@@ -43,9 +39,7 @@ openssl req -newkey rsa:2048 -nodes -keyout sessionPriv.pem -x509 -days 365 -out
 openssl req -newkey rsa:2048 -nodes -keyout web.key -x509 -days 365 -out web.cert -subj "/C=GB/ST=London/L=London/O=jimi/OU=jimi/CN=jimiproject"
 
 wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/jimi_core.service
-sed 's/opt/$dir' jimi_core.service
 wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/jimi_web.service
-sed 's/opt/$dir' jimi_web.service
 
 useradd jimi -M
 cd ..
