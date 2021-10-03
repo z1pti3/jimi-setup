@@ -29,10 +29,10 @@ mkdir temp
 mkdir storage
 mkdir log
 wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/settings.json
-sed 's/"hosts" : ["127.0.0.1:27017"],/"hosts" : ["$mongodb"],' settings.json
+sed 's/"hosts" : ["127.0.0.1:27017"],/"hosts" : ["$mongodb"],/' settings.json
 if [ "$mongodbUser" != "" ]; then
-  sed 's/"username" : null,/"username" : "$mongodbUser",' settings.json
-  sed 's/"password" : null,/"password" : "$mongodbUser",' settings.json
+  sed 's/"username" : null,/"username" : "$mongodbUser",/' settings.json
+  sed 's/"password" : null,/"password" : "$mongodbUser",/' settings.json
 fi
 
 openssl req -newkey rsa:2048 -nodes -keyout sessionPriv.pem -x509 -days 365 -out sessionPub.pem -subj "/C=GB/ST=London/L=London/O=jimi/OU=jimi/CN=jimiproject"
