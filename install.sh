@@ -46,6 +46,12 @@ wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/jimi_core.service
 sed 's/opt/$dir' jimi_core.service
 wget https://raw.githubusercontent.com/z1pti3/jimi-setup/main/jimi_web.service
 sed 's/opt/$dir' jimi_web.service
+
+useradd jimi -M
+cd ..
+cd ..
+chown -R jimi:jimi jimi/
+
 mv jimi_core.service /etc/systemd/system/jimi_core.service
 mv jimi_web.service /etc/systemd/system/jimi_web.service
 systemctl daemon-reload
