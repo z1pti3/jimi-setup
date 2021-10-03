@@ -1,1 +1,12 @@
+[Unit]
+Description=jimi_core
 
+[Service]
+Type=simple
+User=jimi
+Group=jimi
+WorkingDirectory=/opt/jimi/
+ExecStart=/usr/bin/python3 /opt/jimi/jimi_core.py
+
+[Install]
+WantedBy=multi-user.target
