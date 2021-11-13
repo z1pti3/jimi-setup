@@ -3,7 +3,8 @@
         "systemID" : 0,
         "accessAddress" : "127.0.0.1",
         "accessPort" : 5000,
-        "secure" : false
+        "secure" : false,
+        "max_workers" : 1
     },
     "mongodb": {
         "hosts" : ["127.0.0.1:27017"],
@@ -12,45 +13,18 @@
         "password" : null
     },
     "api": {
+        "base" : "api/1.0",
         "core" : {
-            "bind" : "0.0.0.0",
-            "port" : 5000,
-            "base" : "api/1.0",
-            "apiKey" : null
+            "bind" : "127.0.0.1",
+            "port" : 5000
         },
         "worker" : {
             "bind" : "127.0.0.1",
-            "startPort" : 5001,
-            "base" : "api/1.0",
-            "apiKey" : null
+            "startPort" : 5001
         },
         "web" : {
-            "bind" : "127.0.0.1",
-            "port" : 5015,
-            "base" : "api/1.0",
-            "apiKey" : null
-        },
-        "proxy" : {
-            "http" : null,
-            "https" : null
-        }
-    },
-    "auth" : {
-        "enabled" : true,
-        "sessionTimeout" : 1800,
-        "apiSessionTimeout" : 300,
-        "cacheSessionTimeout" : 60,
-        "singleUserSessions" : true,
-        "rsa" : {
-            "cert" : "data/sessionPub.pem",
-            "key" : "data/sessionPriv.pem"
-        },
-        "policy" : {
-            "minLength" : 8,
-            "minNumbers" : 1,
-            "minLower" : 1,
-            "minUpper" : 1,
-            "minSpecial" : 0
+            "bind" : "0.0.0.0",
+            "port" : 5015
         }
     }
 }
